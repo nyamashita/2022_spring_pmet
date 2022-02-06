@@ -1,11 +1,14 @@
 ## 心理測定論 第2回
 ## yyyy/mm/dd
 
+#準備
+#tshirt.csvを読み込もう
+
 head(tshirt)
 
 #重回帰分析
 res_lm <- lm(sales ~ material + price + design, tshirt)
-res_lm$coefficients
+res_lm$coefficients #結果の表示; 偏回帰係数
 
 #従属変数と予測
 plot(tshirt$sales, res_lm$fitted.values)
