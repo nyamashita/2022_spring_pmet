@@ -52,3 +52,36 @@ res_lm$coefficients
 cor(tshirt$material, tshirt$sales)
 cor(tshirt$price, tshirt$sales)
 cor(tshirt$design, tshirt$sales)
+
+#独立変数よりも個体が少ない場合 -> 偏回帰係数がNAになる
+lm(sales ~ material + price + design, tshirt[c(1:2),])
+
+#多重共線性
+# materialと非常に相関が高いmaterial2という独立変数を追加
+tshirt_mult <- data.frame(tshirt,
+                          material2 = tshirt$material+0.01*rnorm(50))
+res_lm_mult <- lm(sales ~ ., tshirt_mult)
+res_lm_mult$coefficients #大きな偏回帰係数が含まれてる
+
+##########################################
+# 適用例; 自動車の燃費データ
+data("mtcars")
+mtcars <- mtcars[,c("mpg", "disp", "hp", "wt")]
+
+#多重共線性をチェック; おそらく問題ない
+cor(mtcars)
+
+#個体数と変数数をチェック
+dim(mtcars)#3独立変数に対して32個体，おそらく大丈夫
+
+#多くの単位が混在しているため，標準解を採用
+res_lm_cars <- lm(mpg ~ ., as.data.frame(scale(mtcars)))
+
+#決定係数をチェック; 0.8376で問題なし
+summary(res_lm_cars)
+
+#解釈
+res_lm_cars$coefficients
+# disp(排気量): ほとんど影響なし
+# hp(馬力)：馬力が上がると燃費が悪くなる
+# wt(重量)：車が重いと燃費が悪くなる
