@@ -1,5 +1,6 @@
-## 心理測定論 第2回
-## yyyy/mm/dd
+## 心理測定論
+##  回帰分析
+##  Naoto Yamashita
 
 #準備
 #tshirt.csvを読み込もう

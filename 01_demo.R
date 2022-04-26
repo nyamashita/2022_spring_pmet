@@ -1,5 +1,6 @@
-# R statistics
-# 2021/4/14
+# 心理測定論
+# Rのデモ
+# 2022/4/5
 # Naoto Yamashita
 
 #電卓として使う
