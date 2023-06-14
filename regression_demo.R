@@ -11,6 +11,13 @@ head(tshirt)
 res_lm <- lm(sales ~ material + price + design, tshirt)
 res_lm$coefficients #結果の表示; 偏回帰係数
 
+#手作業で計算する場合
+X <- as.matrix(cbind(1, tshirt[,1:3]))
+y <- as.matrix(tshirt$sales)
+w <- solve(t(X) %*% X) %*% t(X) %*% y
+e <- y - X %*% w
+J <- diag(nrow(X)) - rep(1,nrow(X))%*%t(rep(1,nrow(X)))/nrow(X) #中心化行列
+
 #従属変数と予測
 plot(tshirt$sales, res_lm$fitted.values)
 cor(tshirt$sales, res_lm$fitted.values)
@@ -30,12 +37,13 @@ cor(residual_lm, res_lm$fitted.values)
 
 ## 従属変数の分散 = 予測値の分散 + 残差の分散
 var(tshirt$sales) - var(res_lm$fitted.values) - var(residual_lm)
-
+sum((y)^2) - sum((X %*% w)^2) - sum((e)^2) #平方和の分解
 
 #分散説明率と一致するいろいろ
 ## そのまま
 var(res_lm$fitted.values)/var(tshirt$sales)
 1 - var(res_lm$residuals)/var(tshirt$sales)
+sum((J %*% X %*% w)^2)/sum((J%*%y)^2)
 
 ## 重相関係数の二乗
 cor(tshirt$sales, res_lm$fitted.values)^2
